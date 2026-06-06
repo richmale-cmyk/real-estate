@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createClient } from "@/lib/supabase/server";
+import { createStaticClient } from "@/lib/supabase/static";
 import type { EnquiryInsert } from "@/lib/supabase/types";
 import { z } from "zod";
 
@@ -23,7 +23,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const supabase = createClient();
+    const supabase = createStaticClient();
 
     const payload: EnquiryInsert = {
       name: parsed.data.name,
@@ -33,13 +33,14 @@ export async function POST(request: NextRequest) {
       property_title: parsed.data.property_title ?? null,
     };
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const { error } = await (supabase.from("enquiries") as any).insert(payload);
+    const result = await supabase.from("enquiries").insert(payload);
 
-    if (error) {
-      console.error("Supabase insert error:", error);
+    console.log("Supabase enquiry insert result:", JSON.stringify(result));
+
+    if (result.error) {
+      console.error("Supabase insert error:", result.error);
       return NextResponse.json(
-        { error: "Failed to submit enquiry" },
+        { error: result.error.message },
         { status: 500 }
       );
     }
