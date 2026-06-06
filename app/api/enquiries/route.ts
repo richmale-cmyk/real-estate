@@ -51,7 +51,7 @@ export async function POST(request: NextRequest) {
     // Send email notification
     await resend.emails.send({
       from: "LuxProp <onboarding@resend.dev>",
-      to: "richmale100@gmail.com",
+      to: "richmale@me.com",
       subject: `New Enquiry — ${parsed.data.property_title ?? "General"}`,
       html: `
         <h2 style="color:#0F2347">New LuxProp Enquiry</h2>
