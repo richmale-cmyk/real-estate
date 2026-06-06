@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { createClient } from "@/lib/supabase/server";
+import { createStaticClient as createClient } from "@/lib/supabase/static";
 import { rowToProperty, type PropertyRow } from "@/lib/supabase/types";
 import PropertiesClient from "./PropertiesClient";
 
