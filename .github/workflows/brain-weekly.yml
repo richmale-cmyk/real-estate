@@ -1,0 +1,60 @@
+name: Weekly Brain Note
+
+on:
+  schedule:
+    - cron: "0 18 * * 0"  # Every Sunday at 6pm UTC (8pm UAE)
+  workflow_dispatch:       # Manual trigger for testing
+
+jobs:
+  generate-note:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Generate note via Claude API
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          # Get list of existing note titles to avoid repeats
+          EXISTING=$(ls content/brain/*.md 2>/dev/null | xargs -I{} basename {} .md | tr '\n' ', ')
+
+          # Call Claude API
+          RESPONSE=$(curl -s https://api.anthropic.com/v1/messages \
+            -H "x-api-key: $ANTHROPIC_API_KEY" \
+            -H "anthropic-version: 2023-06-01" \
+            -H "content-type: application/json" \
+            -d '{
+              "model": "claude-opus-4-5",
+              "max_tokens": 1024,
+              "messages": [{
+                "role": "user",
+                "content": "You are writing a note for Richard Male'\''s digital garden at rmale.io/brain.\n\nRichard is a senior aviation executive (Head of Ground Operations at Air Arabia, managing 83+ stations globally). He also builds AI agent systems in his personal time — autonomous agents that run parts of his life. He thinks deeply about leadership, standards, decision-making, procurement, and the intersection of tech and operations.\n\nExisting notes (do not repeat these topics): '"$EXISTING"'\n\nWrite ONE new note. Pick a topic from: aviation ops, leadership under pressure, AI and automation, procurement and negotiation, decision-making, building systems, personal development, the future of work.\n\nFormat your response as a raw markdown file with this exact frontmatter structure:\n---\ntitle: \"Note Title Here\"\ndate: \"'"$(date +%Y-%m-%d)"'\"\ntags: [\"tag1\", \"tag2\"]\nstatus: \"growing\"\nexcerpt: \"One sharp sentence summary.\"\n---\n\nNote body here.\n\nRules:\n- Professional but personal tone — first person where it fits\n- 200-350 words\n- Sharp, specific, no fluff\n- Reads like a crystallised thought from someone who has actually done the work\n- No generic advice — specific observations\n- Do not wrap in code blocks, return raw markdown only"
+              }]
+            }')
+
+          # Extract the text content
+          NOTE=$(echo "$RESPONSE" | python3 -c "
+          import sys, json
+          data = json.load(sys.stdin)
+          print(data['content'][0]['text'])
+          ")
+
+          # Generate slug from date
+          SLUG="note-$(date +%Y-%m-%d)"
+
+          # Write note file
+          echo "$NOTE" > "content/brain/${SLUG}.md"
+          echo "Generated: content/brain/${SLUG}.md"
+          cat "content/brain/${SLUG}.md"
+
+      - name: Commit and push
+        run: |
+          git config user.name "Jarvis"
+          git config user.email "jarvis@rmale.io"
+          git add content/brain/
+          git diff --staged --quiet || git commit -m "brain: weekly note $(date +%Y-%m-%d)"
+          git push
