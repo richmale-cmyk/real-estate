@@ -3,7 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { Bed, Bath, Maximize2, MapPin, Phone, Mail, ArrowLeft, Check } from "lucide-react";
-import { createStaticClient as createClient } from "@/lib/supabase/static";
+import { createClient } from "@/lib/supabase/server";
 import { createStaticClient } from "@/lib/supabase/static";
 import { rowToProperty, type PropertyRow } from "@/lib/supabase/types";
 import { formatPriceFull, formatSqm } from "@/lib/utils";

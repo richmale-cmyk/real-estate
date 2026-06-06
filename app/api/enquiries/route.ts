@@ -35,6 +35,8 @@ export async function POST(request: NextRequest) {
 
     const result = await supabase.from("enquiries").insert(payload);
 
+    console.log("Supabase enquiry insert result:", JSON.stringify(result));
+
     if (result.error) {
       console.error("Supabase insert error:", result.error);
       return NextResponse.json(
@@ -43,9 +45,9 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Send email via Resend REST API (no SDK — uses native fetch)
+    // Email notification via Resend REST API
     if (process.env.RESEND_API_KEY) {
-      await fetch("https://api.resend.com/emails", {
+      fetch("https://api.resend.com/emails", {
         method: "POST",
         headers: {
           "Authorization": `Bearer ${process.env.RESEND_API_KEY}`,
@@ -55,18 +57,14 @@ export async function POST(request: NextRequest) {
           from: "LuxProp <onboarding@resend.dev>",
           to: "richmale@me.com",
           subject: `New Enquiry — ${parsed.data.property_title ?? "General"}`,
-          html: `
-            <h2 style="color:#0F2347">New LuxProp Enquiry</h2>
-            <table style="border-collapse:collapse;width:100%;font-family:sans-serif">
-              <tr><td style="padding:8px;font-weight:bold;color:#555">Name</td><td style="padding:8px">${parsed.data.name}</td></tr>
-              <tr style="background:#f9f9f9"><td style="padding:8px;font-weight:bold;color:#555">Email</td><td style="padding:8px"><a href="mailto:${parsed.data.email}">${parsed.data.email}</a></td></tr>
-              <tr><td style="padding:8px;font-weight:bold;color:#555">Phone</td><td style="padding:8px"><a href="tel:${parsed.data.phone}">${parsed.data.phone}</a></td></tr>
-              <tr style="background:#f9f9f9"><td style="padding:8px;font-weight:bold;color:#555">Property</td><td style="padding:8px">${parsed.data.property_title ?? "General enquiry"}</td></tr>
-              <tr><td style="padding:8px;font-weight:bold;color:#555">Message</td><td style="padding:8px">${parsed.data.message}</td></tr>
-            </table>
-          `,
+          html: `<h2 style="color:#0F2347">New LuxProp Enquiry</h2>
+            <p><b>Name:</b> ${parsed.data.name}</p>
+            <p><b>Email:</b> ${parsed.data.email}</p>
+            <p><b>Phone:</b> ${parsed.data.phone}</p>
+            <p><b>Property:</b> ${parsed.data.property_title ?? "General"}</p>
+            <p><b>Message:</b> ${parsed.data.message}</p>`,
         }),
-      }).catch((err) => console.error("Resend fetch error:", err));
+      }).catch((e) => console.error("Resend error:", e));
     }
 
     return NextResponse.json({ success: true }, { status: 201 });

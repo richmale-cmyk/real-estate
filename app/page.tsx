@@ -6,7 +6,7 @@ import HeroSection from "@/components/HeroSection";
 import PropertyCard from "@/components/PropertyCard";
 import StatsCounter from "@/components/StatsCounter";
 import TestimonialsCarousel from "@/components/TestimonialsCarousel";
-import { createStaticClient as createClient } from "@/lib/supabase/static";
+import { createClient } from "@/lib/supabase/server";
 import { rowToProperty, type PropertyRow } from "@/lib/supabase/types";
 
 export const metadata: Metadata = {
