@@ -1,0 +1,111 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --primary: #1B3A6B;
+  --accent: #C8A96E;
+  --surface: #FFFFFF;
+  --bg-subtle: #F7F5F2;
+  --text-dark: #1A1A1A;
+  --text-muted: #6B6B6B;
+  --font-poppins: "Poppins", sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--surface);
+  color: var(--text-dark);
+  font-family: var(--font-poppins);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::selection {
+  background-color: var(--accent);
+  color: white;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-subtle);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--primary);
+  border-radius: 3px;
+}
+
+@layer base {
+  h1, h2, h3, h4, h5, h6 {
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  img {
+    max-width: 100%;
+    display: block;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 px-8 py-4 bg-primary text-white font-semibold text-sm tracking-wide rounded-none transition-all duration-300 hover:bg-accent hover:scale-[1.02] active:scale-[0.98];
+  }
+
+  .btn-outline {
+    @apply inline-flex items-center justify-center gap-2 px-8 py-4 border-2 border-primary text-primary font-semibold text-sm tracking-wide rounded-none transition-all duration-300 hover:bg-primary hover:text-white hover:scale-[1.02] active:scale-[0.98];
+  }
+
+  .btn-accent {
+    @apply inline-flex items-center justify-center gap-2 px-8 py-4 bg-accent text-white font-semibold text-sm tracking-wide rounded-none transition-all duration-300 hover:bg-primary hover:scale-[1.02] active:scale-[0.98];
+  }
+
+  .section-label {
+    @apply text-xs font-semibold tracking-[0.2em] uppercase text-accent;
+  }
+
+  .input-field {
+    @apply w-full px-4 py-3 border border-gray-200 bg-white text-text-dark placeholder-text-muted text-sm font-medium focus:outline-none focus:border-primary transition-colors duration-200;
+  }
+
+  .container-wide {
+    @apply max-w-[1400px] mx-auto px-6 lg:px-12;
+  }
+
+  .container-narrow {
+    @apply max-w-[1100px] mx-auto px-6 lg:px-12;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .clip-diagonal {
+    clip-path: polygon(0 0, 100% 0, 100% 88%, 0 100%);
+  }
+
+  .gradient-overlay {
+    background: linear-gradient(to bottom, rgba(27, 58, 107, 0) 0%, rgba(27, 58, 107, 0.8) 100%);
+  }
+}
