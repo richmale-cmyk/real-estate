@@ -30,10 +30,19 @@ create table if not exists public.properties (
 -- Public read access, no public write
 alter table public.properties enable row level security;
 
-create policy "properties_public_read"
-  on public.properties for select
-  to anon, authenticated
-  using (true);
+do $$ begin
+  if not exists (
+    select 1 from pg_policies
+    where schemaname = 'public'
+      and tablename  = 'properties'
+      and policyname = 'properties_public_read'
+  ) then
+    create policy "properties_public_read"
+      on public.properties for select
+      to anon, authenticated
+      using (true);
+  end if;
+end $$;
 
 -- Grant table access to anon role via Data API
 grant select on public.properties to anon;
@@ -54,10 +63,19 @@ create table if not exists public.enquiries (
 -- Anyone can insert, nobody can read via API (admin only via dashboard)
 alter table public.enquiries enable row level security;
 
-create policy "enquiries_public_insert"
-  on public.enquiries for insert
-  to anon, authenticated
-  with check (true);
+do $$ begin
+  if not exists (
+    select 1 from pg_policies
+    where schemaname = 'public'
+      and tablename  = 'enquiries'
+      and policyname = 'enquiries_public_insert'
+  ) then
+    create policy "enquiries_public_insert"
+      on public.enquiries for insert
+      to anon, authenticated
+      with check (true);
+  end if;
+end $$;
 
 -- Grant insert access only
 grant insert on public.enquiries to anon;
