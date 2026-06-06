@@ -24,6 +24,7 @@ interface EnquiryFormProps {
 export default function EnquiryForm({ propertyTitle, compact = false }: EnquiryFormProps) {
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const [serverError, setServerError] = useState<string | null>(null);
 
   const {
     register,
@@ -36,12 +37,27 @@ export default function EnquiryForm({ propertyTitle, compact = false }: EnquiryF
 
   const onSubmit = async (data: FormData) => {
     setSubmitting(true);
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1200));
-    console.log("Enquiry submitted:", { ...data, property: propertyTitle });
-    setSubmitting(false);
-    setSubmitted(true);
-    reset();
+    setServerError(null);
+
+    try {
+      const res = await fetch("/api/enquiries", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...data, property_title: propertyTitle }),
+      });
+
+      if (!res.ok) {
+        const json = await res.json().catch(() => ({}));
+        throw new Error(json.error ?? "Submission failed. Please try again.");
+      }
+
+      setSubmitted(true);
+      reset();
+    } catch (err) {
+      setServerError(err instanceof Error ? err.message : "Something went wrong.");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -167,6 +183,13 @@ export default function EnquiryForm({ propertyTitle, compact = false }: EnquiryF
                 )}
               </div>
             </div>
+
+            {serverError && (
+              <div className="mt-4 flex items-center gap-2 text-sm text-red-600 bg-red-50 px-4 py-3">
+                <AlertCircle size={14} className="flex-shrink-0" />
+                {serverError}
+              </div>
+            )}
 
             <div className="mt-6">
               <button

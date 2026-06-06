@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { Bed, Bath, Maximize2, ArrowUpRight } from "lucide-react";
-import type { Property } from "@/lib/data";
+import type { Property } from "@/lib/supabase/types";
 import { formatPrice, formatSqm } from "@/lib/utils";
 
 interface PropertyCardProps {
