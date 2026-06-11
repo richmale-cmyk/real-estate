@@ -24,7 +24,7 @@ export default function BrainPage() {
   const tags = Array.from(new Set(notes.flatMap((n) => n.tags))).sort();
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-gray-200">
+    <div className="min-h-screen bg-[#0B1A33] text-slate-200">
       {/* Header */}
       <div className="border-b border-white/5 py-16">
         <div className="max-w-2xl mx-auto px-6">
@@ -34,8 +34,8 @@ export default function BrainPage() {
           >
             ← rmale.io
           </Link>
-          <h1 className="text-4xl font-bold text-white mb-3 tracking-tight">Brain</h1>
-          <p className="text-gray-400 text-base leading-relaxed max-w-lg">
+          <h1 className="text-4xl md:text-5xl font-semibold text-white mb-3 tracking-tight">Brain<span className="text-[#C8A96E]">.</span></h1>
+          <p className="text-slate-300/80 text-base leading-relaxed max-w-lg">
             A digital garden — not a blog. Notes in various states of growth on aviation, leadership, AI, and how I think about things.
           </p>
           <div className="flex items-center gap-4 mt-6 text-xs text-gray-500">
@@ -53,7 +53,7 @@ export default function BrainPage() {
             {tags.map((tag) => (
               <span
                 key={tag}
-                className="text-xs px-3 py-1 rounded-full border border-white/10 text-gray-400"
+                className="text-xs px-3 py-1 rounded-full border border-[#C8A96E]/25 text-[#C8A96E]/80"
               >
                 {tag}
               </span>
