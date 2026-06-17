@@ -1,124 +1,30 @@
 import type { Metadata } from "next";
-import Link from "next/link";
-import Image from "next/image";
-import { ArrowRight } from "lucide-react";
-import HeroSection from "@/components/HeroSection";
-import PropertyCard from "@/components/PropertyCard";
-import StatsCounter from "@/components/StatsCounter";
-import TestimonialsCarousel from "@/components/TestimonialsCarousel";
-import { createStaticClient as createClient } from "@/lib/supabase/static";
-import { rowToProperty, type PropertyRow } from "@/lib/supabase/types";
 
 export const metadata: Metadata = {
-  title: "LuxProp — Exceptional Properties, Exceptional Lives",
-  description:
-    "Discover the world's finest residential properties. From Malibu cliffsides to Manhattan penthouses.",
+  title: "Personal OS",
+  description: "Embedded Personal OS dashboard",
 };
 
-export const revalidate = 60;
-
-export default async function HomePage() {
-  const supabase = createClient();
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { data } = await (supabase.from("properties") as any)
-    .select("*")
-    .neq("status", "Sold")
-    .order("created_at", { ascending: false })
-    .limit(6) as { data: PropertyRow[] | null };
-
-  const featured = (data ?? []).map(rowToProperty);
-
+export default function HomePage() {
   return (
-    <>
-      <HeroSection />
-      <StatsCounter />
-
-      {/* Featured listings */}
-      <section className="py-20 lg:py-28 bg-white">
-        <div className="container-wide">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-14">
-            <div>
-              <span className="section-label mb-3 block">Curated Selection</span>
-              <h2 className="text-4xl md:text-5xl font-extrabold text-text-dark">
-                Featured<br />
-                <span className="text-primary">Properties</span>
-              </h2>
-            </div>
-            <Link href="/properties" className="btn-outline self-start md:self-auto flex items-center gap-2 group">
-              View All Listings
-              <ArrowRight size={15} className="transition-transform group-hover:translate-x-1" />
-            </Link>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
-            {featured.length > 0 ? (
-              featured.map((property, i) => (
-                <PropertyCard key={property.id} property={property} index={i} />
-              ))
-            ) : (
-              <p className="text-text-muted col-span-3 text-center py-12">
-                No listings available right now — check back soon.
-              </p>
-            )}
-          </div>
-        </div>
-      </section>
-
-      {/* Editorial section */}
-      <section className="relative bg-primary overflow-hidden">
-        <div className="container-wide grid lg:grid-cols-2 items-center gap-0">
-          <div className="py-20 lg:py-28 lg:pr-16">
-            <span className="section-label mb-4 block text-accent">Our Approach</span>
-            <h2 className="text-4xl md:text-5xl font-extrabold text-white leading-tight mb-6">
-              More Than a<br />Transaction
-            </h2>
-            <p className="text-white/70 text-base leading-relaxed mb-8 max-w-md">
-              We believe that finding your next home is one of life&apos;s most significant moments. That&apos;s why every client receives the undivided attention of a dedicated agent — from the first conversation to the final handshake.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4">
-              <Link href="/about" className="btn-accent group">
-                Our Story <ArrowRight size={15} className="transition-transform group-hover:translate-x-1" />
-              </Link>
-              <Link href="/contact" className="inline-flex items-center justify-center gap-2 px-8 py-4 border-2 border-white/30 text-white font-semibold text-sm tracking-wide hover:border-white transition-colors duration-300">
-                Meet the Team
-              </Link>
-            </div>
-          </div>
-          <div className="relative h-72 lg:h-full lg:min-h-[520px]">
-            <Image
-              src="https://picsum.photos/seed/editorial001/900/700"
-              alt="Luxury home interior"
-              fill
-              sizes="(max-width: 1024px) 100vw, 50vw"
-              className="object-cover"
-              placeholder="blur"
-              blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwgJC4nICIsIxwcKDcpLDAxNDQ0Hyc5PTgyPC4zNDL/wAARCAAIAAoDASIAAhEBAxEB/8QAFgABAQEAAAAAAAAAAAAAAAAABAUG/8QAIBAAAQQBBQEAAAAAAAAAAAAAAQIDBAUREiExQf/EABQBAQAAAAAAAAAAAAAAAAAAAAD/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCi3ue5VnXfHWmkpQ2hzpSEpAAAHQBIAHwBSlAz/9k="
-            />
-            <div className="absolute inset-0 bg-primary/30" />
-          </div>
-        </div>
-      </section>
-
-      <TestimonialsCarousel />
-
-      {/* CTA */}
-      <section className="py-20 lg:py-28 bg-bg-subtle">
-        <div className="container-narrow text-center">
-          <span className="section-label mb-4 block">Ready to Begin?</span>
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-text-dark mb-6 text-balance">
-            Find Your Perfect <span className="text-primary">Address</span>
-          </h2>
-          <p className="text-text-muted text-base md:text-lg leading-relaxed mb-10 max-w-2xl mx-auto">
-            Whether you&apos;re searching for a primary residence, a vacation retreat, or an investment property, our agents are ready to guide you to the right home.
+    <section className="mx-auto max-w-[1600px] px-4 py-4 md:px-8 md:py-6">
+      <div className="mb-4 flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
+        <div>
+          <p className="text-xs font-semibold uppercase tracking-[0.28em] text-accent">Page 1</p>
+          <h2 className="text-2xl font-bold text-white md:text-3xl">Personal OS</h2>
+          <p className="mt-1 text-sm text-white/65 md:text-base">
+            Live embed of <span className="text-white">personal-os-silk.vercel.app</span>.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="/properties" className="btn-primary group">
-              Browse All Properties <ArrowRight size={15} className="transition-transform group-hover:translate-x-1" />
-            </Link>
-            <Link href="/contact" className="btn-outline">Contact an Agent</Link>
-          </div>
         </div>
-      </section>
-    </>
+      </div>
+
+      <div className="overflow-hidden rounded-[24px] border border-white/10 bg-black/25 shadow-2xl shadow-black/30">
+        <iframe
+          src="https://personal-os-silk.vercel.app/"
+          title="Personal OS"
+          className="h-[calc(100vh-12rem)] min-h-[720px] w-full bg-white"
+        />
+      </div>
+    </section>
   );
 }
