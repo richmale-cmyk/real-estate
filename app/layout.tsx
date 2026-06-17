@@ -15,7 +15,7 @@ export const metadata: Metadata = {
     default: "rmale.io",
     template: "%s | rmale.io",
   },
-  description: "Two-page shell for Personal OS and supporting pages.",
+  description: "Personal OS — Richard Male",
 };
 
 export default function RootLayout({
@@ -25,19 +25,20 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={poppins.variable}>
-      <body className="min-h-screen bg-[#050816] font-sans text-white antialiased">
-        <div className="min-h-screen bg-[radial-gradient(circle_at_top,_rgba(200,169,110,0.16),_transparent_28%),linear-gradient(180deg,_#0a1024_0%,_#050816_100%)]">
-          <header className="border-b border-white/10 bg-black/20 backdrop-blur">
-            <div className="mx-auto flex max-w-[1600px] flex-col gap-4 px-5 py-4 md:flex-row md:items-center md:justify-between md:px-8">
+      <body className="min-h-screen bg-white font-sans text-text-dark antialiased">
+        <header className="border-b border-gray-100 bg-white shadow-sm">
+          <div className="mx-auto flex max-w-[1600px] flex-col gap-4 px-5 py-4 md:flex-row md:items-center md:justify-between md:px-8">
+            <div className="flex items-center gap-3">
+              <div className="h-8 w-1 rounded-full bg-primary" />
               <div>
-                <p className="text-xs font-semibold uppercase tracking-[0.28em] text-accent">rmale.io</p>
-                <h1 className="mt-1 text-xl font-bold text-white md:text-2xl">Personal shell</h1>
+                <p className="text-xs font-semibold uppercase tracking-[0.28em] text-primary">rmale.io</p>
+                <h1 className="text-lg font-bold text-text-dark md:text-xl">Personal OS</h1>
               </div>
-              <SiteTabs />
             </div>
-          </header>
-          <main>{children}</main>
-        </div>
+            <SiteTabs />
+          </div>
+        </header>
+        <main>{children}</main>
       </body>
     </html>
   );
