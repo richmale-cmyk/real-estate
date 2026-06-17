@@ -12,7 +12,7 @@ export default function SiteTabs() {
   const pathname = usePathname();
 
   return (
-    <nav className="flex flex-wrap items-center gap-3">
+    <nav className="flex flex-wrap items-center gap-2">
       {tabs.map((tab) => {
         const active = pathname === tab.href;
         return (
@@ -20,10 +20,10 @@ export default function SiteTabs() {
             key={tab.href}
             href={tab.href}
             className={[
-              "rounded-full border px-4 py-2 text-sm font-semibold transition-colors duration-200",
+              "rounded-full border px-5 py-2 text-sm font-semibold transition-all duration-200",
               active
-                ? "border-accent bg-accent text-white"
-                : "border-white/10 bg-white/5 text-white/75 hover:border-white/25 hover:text-white",
+                ? "border-primary bg-primary text-white shadow-sm"
+                : "border-gray-200 bg-white text-text-muted hover:border-primary hover:text-primary",
             ].join(" ")}
           >
             {tab.label}
