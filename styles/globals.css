@@ -3,10 +3,10 @@
 @tailwind utilities;
 
 :root {
-  --primary: #0F2347;
-  --accent: #C8A96E;
+  --primary: #E2231A;
+  --accent: #E2231A;
   --surface: #FFFFFF;
-  --bg-subtle: #F7F5F2;
+  --bg-subtle: #F9F9F9;
   --text-dark: #1A1A1A;
   --text-muted: #6B6B6B;
   --font-poppins: "Poppins", sans-serif;
@@ -31,7 +31,7 @@ body {
 }
 
 ::selection {
-  background-color: var(--accent);
+  background-color: var(--primary);
   color: white;
 }
 
@@ -68,23 +68,11 @@ body {
 
 @layer components {
   .btn-primary {
-    @apply inline-flex items-center justify-center gap-2 px-8 py-4 bg-primary text-white font-semibold text-sm tracking-wide rounded-none transition-all duration-300 hover:bg-accent hover:scale-[1.02] active:scale-[0.98];
-  }
-
-  .btn-outline {
-    @apply inline-flex items-center justify-center gap-2 px-8 py-4 border-2 border-primary text-primary font-semibold text-sm tracking-wide rounded-none transition-all duration-300 hover:bg-primary hover:text-white hover:scale-[1.02] active:scale-[0.98];
-  }
-
-  .btn-accent {
-    @apply inline-flex items-center justify-center gap-2 px-8 py-4 bg-accent text-white font-semibold text-sm tracking-wide rounded-none transition-all duration-300 hover:bg-primary hover:scale-[1.02] active:scale-[0.98];
+    @apply inline-flex items-center justify-center gap-2 px-8 py-4 bg-primary text-white font-semibold text-sm tracking-wide rounded-none transition-all duration-300 hover:opacity-90 hover:scale-[1.02] active:scale-[0.98];
   }
 
   .section-label {
-    @apply text-xs font-semibold tracking-[0.2em] uppercase text-accent;
-  }
-
-  .input-field {
-    @apply w-full px-4 py-3 border border-gray-200 bg-white text-text-dark placeholder-text-muted text-sm font-medium focus:outline-none focus:border-primary transition-colors duration-200;
+    @apply text-xs font-semibold tracking-[0.2em] uppercase text-primary;
   }
 
   .container-wide {
@@ -99,22 +87,5 @@ body {
 @layer utilities {
   .text-balance {
     text-wrap: balance;
-  }
-
-  .clip-diagonal {
-    clip-path: polygon(0 0, 100% 0, 100% 88%, 0 100%);
-  }
-
-  .gradient-overlay {
-    background: linear-gradient(to bottom, rgba(15, 35, 71, 0) 0%, rgba(15, 35, 71, 0.8) 100%);
-  }
-
-  /* White text fizz — luminous glow for headings on dark backgrounds */
-  .text-fizz {
-    text-shadow:
-      0 0 60px rgba(255, 255, 255, 0.18),
-      0 0 20px rgba(200, 169, 110, 0.12),
-      0 2px 4px rgba(0, 0, 0, 0.25);
-    -webkit-font-smoothing: antialiased;
   }
 }
